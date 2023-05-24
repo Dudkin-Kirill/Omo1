@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Шифрование и дешифрование текста</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    label {
+      flex: 1;
+    }
+
+    input[type="text"] {
+      flex: 2;
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .result {
+      text-align: center;
+    }
+
+    .result h2 {
+      margin-top: 20px;
+    }
+
+    .decrypt-section {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Шифрование и дешифрование текста</h1>
+    <form id="encryptionForm">
+      <label for="text">Введите текст:</label>
+      <input type="text" id="text" required>
+      <button type="submit">Зашифровать</button>
+    </form>
+    <div class="result">
+      <h2>Зашифрованный текст:</h2>
+      <p id="encryptedText"></p>
+      <h2>Дешифрованный текст:</h2>
+      <p id="decryptedText"></p>
+      <div class="decrypt-section">
+        <label for="encryptedInput">Введите зашифрованный текст:</label>
+        <input type="text" id="encryptedInput">
+        <button id="decryptButton">Дешифровать</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const keys = {
+      'a': ['Q', '1', '!', '`', 'Я', 'М', 'Ь', 'З'],
+      'b': ['W', '2'],
+      'c': ['E', '3', '@'],
+      'd': ['R', '4', '#', ':'],
+      'e': ['T', '5', '$', ';', 'Ц', 'Е', 'Ш', 'Ж', ',', 'ф', 'ч', 'ш'],
+      'f': ['Y', '6'],
+      'g': ['U', '7'],
+      'h': ['I', '8', '%', '"', 'Ы', 'П'],
+      'i': ['O', '9', '^', '/', 'Ч', 'И'],
+      'j': ['P'],
+      'k': ['A'],
+      'l': ['S', '0', '&', '?'],
+      'm': ['D', '*'],
+      'n': ['F', '(', '<', 'У', 'Н', 'Л'],
+      'o': ['G', ')', '>', 'В', 'Р', 'Б', 'Х'],
+      'p': ['H', '-'],
+      'q': ['J'],
+      'r': ['K', '_', '|', 'С', 'Т', 'Щ'],
+      's': ['L', '+', '№', 'К', 'Г', 'Д'],
+      't': ['M', '=', 'Й', 'А', 'О', 'Ю', 'Ъ', '.', 'й'],
+      'u': ['N', '[', 'Ф'],
+      'v': ['B'],
+      'w': ['V', ']'],
+      'x': ['C'],
+      'y': ['X', '{'],
+      'z': ['Z'],
+      ' ': ['}']
+    };
+
+    const getRandomIndex = (length) => {
+      return Math.floor(Math.random() * length);
+    };
+
+    const encryptText = (text) => {
+      let crypt = '';
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i].toLowerCase();
+        if (char in keys) {
+          const keyOptions = keys[char];
+          const randomIndex = getRandomIndex(keyOptions.length);
+          crypt += keyOptions[randomIndex];
+        }
+      }
+      return crypt;
+    };
+
+    const decryptText = (text) => {
+      let decrypt = '';
+      for (let i = 0; i < text.length; i++) {
+        for (const key in keys) {
+          for (let j = 0; j < keys[key].length; j++) {
+            if (text[i] === keys[key][j]) {
+              decrypt += key;
+              break;
+            }
+          }
+        }
+      }
+      return decrypt;
+    };
+
+    const encryptionForm = document.getElementById('encryptionForm');
+    const encryptedText = document.getElementById('encryptedText');
+    const decryptedText = document.getElementById('decryptedText');
+    const encryptedInput = document.getElementById('encryptedInput');
+    const decryptButton = document.getElementById('decryptButton');
+
+    encryptionForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const inputText = document.getElementById('text').value;
+      const encrypted = encryptText(inputText);
+      encryptedText.textContent = encrypted;
+      decryptedText.textContent = '';
+    });
+
+    decryptButton.addEventListener('click', function() {
+      const inputText = encryptedInput.value;
+      const decrypted = decryptText(inputText);
+      decryptedText.textContent = decrypted;
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
